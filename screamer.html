@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screamer</title>
+    <style>
+        /* Скрываем скример по умолчанию */
+        #screamer {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Изображение на весь экран */
+        #screamer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: shake 0.1s infinite;
+        }
+
+        /* Эффект дрожания изображения */
+        @keyframes shake {
+            0% { transform: translate(2px, 2px); }
+            25% { transform: translate(-2px, -2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, 2px); }
+            100% { transform: translate(2px, 2px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="screamer">
+        <img src="./images (1).jpg" alt="Screamer Image">
+        <audio id="screamSound" src="./sound_70957.mp3" loop autoplay muted></audio>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const screamSound = document.getElementById("screamSound");
+
+            // Снимаем режим "mute" и начинаем воспроизведение
+            screamSound.muted = false;
+            screamSound.currentTime = 0;
+            screamSound.play().catch(error => {
+                console.log("Автозапуск звука заблокирован браузером:", error);
+            });
+        };
+    </script>
+</body>
+</html>
