@@ -1,59 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screamer</title>
-    <style>
-        /* Скрываем скример по умолчанию */
-        #screamer {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Изображение на весь экран */
-        #screamer img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            animation: shake 0.1s infinite;
-        }
-
-        /* Эффект дрожания изображения */
-        @keyframes shake {
-            0% { transform: translate(2px, 2px); }
-            25% { transform: translate(-2px, -2px); }
-            50% { transform: translate(2px, -2px); }
-            75% { transform: translate(-2px, 2px); }
-            100% { transform: translate(2px, 2px); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOL</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background-color: black;
+    }
+    #screamerImage {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: invertColors 0.1s infinite;
+    }
+    @keyframes invertColors {
+      0%, 100% {
+        filter: none;
+      }
+      50% {
+        filter: invert(1);
+      }
+    }
+    #cookieConsent {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 30;
+    }
+    #cookieConsent span {
+      font-size: 1.5em;
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 0 20px;
+    }
+    #acceptButton {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      cursor: pointer;
+      font-size: 1.2em;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-    <div id="screamer">
-        <img src="./images (1).jpg" alt="Screamer Image">
-        <audio id="screamSound" src="./sound_70957.mp3" loop autoplay muted></audio>
-    </div>
+  <img id="screamerImage" src="images (1).jpg" alt="Скример">
+  <audio id="screamerAudio" src="sound_70957.mp3" loop></audio>
+  
+  <div id="cookieConsent">
+    <span>Этот сайт использует cookies для улучшения вашего опыта. Нажмите "Принять", чтобы продолжить.</span>
+    <button id="acceptButton">Принять</button>
+  </div>
 
-    <script>
-        window.onload = () => {
-            const screamSound = document.getElementById("screamSound");
+  <script>
+    // Функция для запроса полноэкранного режима
+    function enterFullscreen() {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+        document.documentElement.msRequestFullscreen();
+      }
+    }
 
-            // Снимаем режим "mute" и начинаем воспроизведение
-            screamSound.muted = false;
-            screamSound.currentTime = 0;
-            screamSound.play().catch(error => {
-                console.log("Автозапуск звука заблокирован браузером:", error);
-            });
-        };
-    </script>
+    document.getElementById('acceptButton').addEventListener('click', function() {
+      // Убираем баннер
+      document.getElementById('cookieConsent').style.display = 'none';
+
+      // Включаем полноэкранный режим
+      enterFullscreen();
+
+      // Показываем скример
+      const image = document.getElementById("screamerImage");
+      const audio = document.getElementById("screamerAudio");
+
+      image.style.display = "block";
+      
+      // Увеличиваем громкость звука до максимума
+      audio.volume = 1;
+      audio.play();
+
+      // Затемняем экран через секунду
+      setTimeout(() => {
+        document.body.style.backgroundColor = "black";
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
